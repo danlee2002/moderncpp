@@ -65,7 +65,21 @@ string hello = "hello";
 func(hello);
 ```
 The following snippet of code is technically illegal but cpp has a procedure to handle this.
-- Taking the reference of lvalue reference results in lvalue reference $(X\&)\&  \rightarrow X\&$
-- Taking the rvalue reference of lvalue reference results in lvalue reference
-- Taking the lvalue reference of an rvalue reference results in lvalue 
-- Taking the rvalue reference of an rvalue reference results in rvalue refernece
+- Taking the reference of lvalue reference results in lvalue reference: (X&)& -> X& 
+- Taking the rvalue reference of lvalue reference results in lvalue reference: (X&)&& -> X&
+- Taking the lvalue reference of an rvalue reference results in lvalue reference:  (X&&)& -> X&
+- Taking the rvalue reference of an rvalue reference results in rvalue refernece: (X&&)&& -> X&&
+### Forwarding with forward:
+The function std::forward is useful for solving the perfect forwaring problem 
+Two primary objectives:
+    - If passed an argument that isn't lvalue reference than the function returns a rvalue
+    - If lvalue ref passed int then lvalue ref is passed
+In other words, if we have a tempalte function that accepts a rvalue reference then the argument will be able to be forwarded as rvalue reference.
+Whereas, if lvalue is passed then the function triggers an inner function assuming an overloaded function exists.
+```cpp
+template<typename T>
+void func(T&& t){
+    std::forward<T>(t);
+}
+```
+
