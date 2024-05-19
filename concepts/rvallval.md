@@ -63,11 +63,11 @@ int& returnGlobal() {
 array[3] =2; //array[3] is a lvalue since it is memory location that can be assigned a new value
 ```
 ### Misconception 2: lvalues are modifiable
-```
+```cpp
 const int c = 1; //c is a lvalue
 ```
 ### Misconception 3: rvalues are not modifiable
-```
+```cpp
 class dog;
 dog().bark(); //could change state of dogs 
 ```
