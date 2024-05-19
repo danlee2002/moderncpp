@@ -16,7 +16,7 @@ int scale(int &&j, int k) {
     return j * k;
 }
 ```
-### Perfect forwarding:
+## Perfect forwarding:
 With the notion of rvalue reference covered, we can now cover the notion of perfect forwarding.
 Perfect forwarding is the act of passing a function parameter while perserving it's reference category.
 To consider the motivation, let's consider the following example.
@@ -44,4 +44,28 @@ Although this function may be able to take a rvalue reference, it's clear that t
 This is when perfect forwarding comes in. Before we delve into the monolith of perfect forwarding, we first need to cover some other concepts.
 The first being the notion of Template Type deduction:
 - Template type deduction covers how the compiler deduces the type T passed into a template function when the function parameter is of the type T&&.
+Consider the case in which an argument is passed where if T is a lvalue, then T is deduced to a lvalue reference, X&
+- If the argument passed to T is a rvalue then T is deduced to lvalue X
+In this case, consider the following snippet code:
+```cpp
+OuterFunction(6); //T is converted to lvalue T = int  
+std::string var = "hello";
+OuterFunction(hello); //T is converted to reference type string& or in other words T = string&
 
+```
+### Reference Collapsing:
+The notion of reference collapsing is a set of rules in C++11 that are used to determine the value of T of a template function when taking the reference reference which is something illegal in cpp.
+Consider the following snippet of code. 
+```cpp
+template<typname T>
+void func(T t) {
+    T& k = t;
+}
+string hello = "hello";
+func(hello);
+```
+The following snippet of code is technically illegal but cpp has a procedure to handle this.
+- Taking the reference of lvalue reference results in lvalue reference $(X\&)\&  \rightarrow X\&$
+- Taking the rvalue reference of lvalue reference results in lvalue reference
+- Taking the lvalue reference of an rvalue reference results in lvalue 
+- Taking the rvalue reference of an rvalue reference results in rvalue refernece
