@@ -82,4 +82,11 @@ void func(T&& t){
     std::forward<T>(t);
 }
 ```
+An implementation of std::forward
+```cpp
+template <class T>
+T&& forward(typename remove_reference<T>::type& arg) {
+    return static_cast<T&&>(arg);
+}
+```
 
